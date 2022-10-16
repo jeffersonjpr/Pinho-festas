@@ -11,7 +11,7 @@ class PessoaDatabase:
                 "INSERT INTO pessoa (nome, cpf, telefone) VALUES (?, ?, ?)", (nome, cpf, telefone))
             PessoaDatabase.database.db_connection.commit()
         except Exception as e:
-            print(e)
+            print("PessoaDatabase", e)
 
     @staticmethod
     def delete(id):
@@ -20,7 +20,7 @@ class PessoaDatabase:
                 "DELETE FROM pessoa WHERE id = ?", (id,))
             PessoaDatabase.database.db_connection.commit()
         except Exception as e:
-            print(e)
+            print("PessoaDatabase", e)
 
     @staticmethod
     def get_all():
@@ -29,7 +29,7 @@ class PessoaDatabase:
             pessoas = PessoaDatabase.database.db_cursor.fetchall()
             return pessoas
         except Exception as e:
-            print(e)
+            print("PessoaDatabase", e)
 
     @staticmethod
     def get_by_id(id):
@@ -39,7 +39,7 @@ class PessoaDatabase:
             pessoa = PessoaDatabase.database.db_cursor.fetchone()
             return pessoa
         except Exception as e:
-            print(e)
+            print("PessoaDatabase", e)
 
     @staticmethod
     def update(id, nome, cpf, telefone):
@@ -48,7 +48,7 @@ class PessoaDatabase:
                 "UPDATE pessoa SET nome = ?, cpf = ?, telefone = ? WHERE id = ?", (nome, cpf, telefone, id))
             PessoaDatabase.database.db_connection.commit()
         except Exception as e:
-            print(e)
+            print("PessoaDatabase", e)
 
     @staticmethod
     def get_by_cpf(cpf):
@@ -58,4 +58,4 @@ class PessoaDatabase:
             pessoa = PessoaDatabase.database.db_cursor.fetchone()
             return pessoa
         except Exception as e:
-            print(e)
+            print("PessoaDatabase", e)

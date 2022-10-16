@@ -20,7 +20,7 @@ class Database:
         except Error as e:
             print(e)
 
-        print("Connection to SQLite DB successful")
+        # print("Connection to SQLite DB successful")
 
         return connection
 
@@ -31,7 +31,7 @@ class Database:
         except Error as e:
             print(e)
 
-        print("Table created successfully")
+        # print("Table created successfully")
 
     def initialize_tables(self):
         self.create_table(pessoa.pessoa)
@@ -39,4 +39,4 @@ class Database:
         self.create_table(pessoa_equipe.pessoa_equipe)
         self.create_table(brinquedo.brinquedo)
         self.create_table(aluguel.aluguel)
-        print("Tables created")
+        # print("Tables created")
