@@ -13,14 +13,14 @@ class PessoaEquipeController:
             raise Exception("Pessoa já está em uma equipe")
 
         PessoaEquipeDatabase.insert(pessoa_id, equipe_id)
-        print("Pessoa adicionada a equipe com sucesso")
+        # print("Pessoa adicionada a equipe com sucesso")
 
     @staticmethod
     def delete(id):
         PessoaEquipeController.__pessoa_equipe_exists(id)
 
         PessoaEquipeDatabase.delete(id)
-        print("Pessoa removida da equipe com sucesso")
+        # print("Pessoa removida da equipe com sucesso")
 
     @staticmethod
     def __pessoa_equipe_exists(id):
@@ -45,3 +45,13 @@ class PessoaEquipeController:
     def __equipe_exists(id):
         if not EquipeController.get_by_id(id):
             raise Exception("Equipe não encontrada")
+
+    @staticmethod
+    def get_by_pessoa_id(pessoa_id):
+        PessoaEquipeController.__pessoa_exists(pessoa_id)
+        return PessoaEquipeDatabase.get_by_pessoa_id(pessoa_id)
+
+    @staticmethod
+    def get_by_equipe_id(equipe_id):
+        PessoaEquipeController.__equipe_exists(equipe_id)
+        return PessoaEquipeDatabase.get_by_equipe_id(equipe_id)

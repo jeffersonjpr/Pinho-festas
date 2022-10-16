@@ -4,21 +4,21 @@ class BrinquedoController:
     @staticmethod
     def insert(nome, descricao, largura, altura, comprimento):
         BrinquedoDatabase.insert(nome, descricao, largura, altura, comprimento)
-        print("Brinquedo cadastrado com sucesso")
+        # print("Brinquedo cadastrado com sucesso")
 
     @staticmethod
     def delete(id):
         BrinquedoController.__brinquedo_exists(id)
 
         BrinquedoDatabase.delete(id)
-        print("Brinquedo deletado com sucesso")
+        # print("Brinquedo deletado com sucesso")
 
     @staticmethod
     def update(id, nome, descricao, largura, altura, comprimento):
         BrinquedoController.__brinquedo_exists(id)
 
         BrinquedoDatabase.update(id, nome, descricao, largura, altura, comprimento)
-        print("Brinquedo atualizado com sucesso")
+        # print("Brinquedo atualizado com sucesso")
 
     @staticmethod
     def __brinquedo_exists(id):

@@ -5,21 +5,21 @@ class EquipeController:
     @staticmethod
     def insert(nome, descricao):
         EquipeDatabase.insert(nome, descricao)
-        print("Equipe cadastrada com sucesso")
+        # print("Equipe cadastrada com sucesso")
 
     @staticmethod
     def delete(id):
         EquipeController.__equipe_exists(id)
 
         EquipeDatabase.delete(id)
-        print("Equipe deletada com sucesso")
+        # print("Equipe deletada com sucesso")
 
     @staticmethod
     def update(id, nome, descricao):
         EquipeController.__equipe_exists(id)
 
         EquipeDatabase.update(id, nome, descricao)
-        print("Equipe atualizada com sucesso")
+        # print("Equipe atualizada com sucesso")
 
     @staticmethod
     def __equipe_exists(id):

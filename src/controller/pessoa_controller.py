@@ -9,7 +9,7 @@ class PessoaController:
             raise Exception("CPF já cadastrado")
 
         PessoaDatabase.insert(nome, cpf, telefone)
-        print("Pessoa cadastrada com sucesso")
+        # print("Pessoa cadastrada com sucesso")
 
     @staticmethod
     def delete(id):
@@ -18,14 +18,14 @@ class PessoaController:
         PessoaController.__pessoa_exists(id)
 
         PessoaDatabase.delete(id)
-        print("Pessoa deletada com sucesso")
+        # print("Pessoa deletada com sucesso")
 
     @staticmethod
     def update(id, nome, cpf, telefone):
         PessoaController.__pessoa_exists(id)
 
         PessoaDatabase.update(id, nome, cpf, telefone)
-        print("Pessoa atualizada com sucesso")
+        # print("Pessoa atualizada com sucesso")
 
     @staticmethod
     def __pessoa_exists(id):
