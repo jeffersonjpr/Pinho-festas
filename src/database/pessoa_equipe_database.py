@@ -30,10 +30,30 @@ class PessoaEquipeDatabase:
             print(e)
 
     @staticmethod
+    def get_by_id(id):
+        try:
+            Database.db_cursor.execute(
+                "SELECT * FROM pessoa_equipe WHERE id = ?", (id))
+            pessoa_equipe = Database.db_cursor.fetchone()
+            return pessoa_equipe
+        except Exception as e:
+            print(e)
+
+    @staticmethod
     def remove_by_pessoa_id(pessoa_id):
         try:
             Database.db_cursor.execute(
                 "DELETE FROM pessoa_equipe WHERE pessoa_id = ?", (pessoa_id))
             Database.db_connection.commit()
+        except Exception as e:
+            print(e)
+
+    @staticmethod
+    def get_by_pessoa_id(pessoa_id):
+        try:
+            Database.db_cursor.execute(
+                "SELECT * FROM pessoa_equipe WHERE pessoa_id = ?", (pessoa_id))
+            pessoa_equipe = Database.db_cursor.fetchone()
+            return pessoa_equipe
         except Exception as e:
             print(e)

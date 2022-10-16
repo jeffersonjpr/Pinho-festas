@@ -49,3 +49,23 @@ class AluguelDatabase:
             Database.db_connection.commit()
         except Exception as e:
             print(e)
+
+    @staticmethod
+    def get_by_data_montagem(data_montagem):
+        try:
+            Database.db_cursor.execute(
+                "SELECT * FROM aluguel WHERE data_montagem = ?", (data_montagem,))
+            aluguel = Database.db_cursor.fetchone()
+            return aluguel
+        except Exception as e:
+            print(e)
+    
+    @staticmethod
+    def get_by_data_desmontagem(data_desmontagem):
+        try:
+            Database.db_cursor.execute(
+                "SELECT * FROM aluguel WHERE data_desmontagem = ?", (data_desmontagem,))
+            aluguel = Database.db_cursor.fetchone()
+            return aluguel
+        except Exception as e:
+            print(e)
