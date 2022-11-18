@@ -23,6 +23,8 @@ class AluguelController:
 
         AluguelDatabase.insert(brinquedo_id, data_montagem,
                                data_desmontagem, equipe_montagem_id, equipe_desmontagem_id)
+        
+        return "sucesso"
 
     @staticmethod
     def __correct_dates(data_montagem, data_desmontagem):
