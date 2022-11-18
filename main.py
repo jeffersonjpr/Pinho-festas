@@ -64,3 +64,15 @@ try:
     print("Esse teste não deveria passar")
 except Exception as e:
     print("Esse erro deve aparecer (Equipe 1 não disponível):", e)
+
+try:
+    print("Equipe 1 e 2 Devem aparecer abaixo")
+    print(EquipeController.get_all())
+except Exception as e:
+    print("Esse erro não deve aparecer:", e)
+    
+try:
+    print("Aluguel 1 deve aparecer abaixo")
+    print(AluguelController.get_all())
+except Exception as e:
+    print("Esse erro não deve aparecer:", e)

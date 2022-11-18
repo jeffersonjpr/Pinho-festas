@@ -11,19 +11,18 @@ class AluguelController:
     def insert(brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id):
         data_montagem, data_desmontagem = AluguelController.__correct_dates(
             data_montagem, data_desmontagem)
+        AluguelController.__equipe_exists(equipe_montagem_id)
+        AluguelController.__equipe_exists(equipe_desmontagem_id)
+        AluguelController.__brinquedo_exists(brinquedo_id)
         AluguelController.__verify_equipe_available(
             equipe_montagem_id, data_montagem)
         AluguelController.__verify_equipe_available(
             equipe_desmontagem_id, data_desmontagem)
         AluguelController.__verify_brinquedo_available(
             brinquedo_id, data_montagem, data_desmontagem)
-        AluguelController.__brinquedo_exists(brinquedo_id)
-        AluguelController.__equipe_exists(equipe_montagem_id)
-        AluguelController.__equipe_exists(equipe_desmontagem_id)
 
         AluguelDatabase.insert(brinquedo_id, data_montagem,
                                data_desmontagem, equipe_montagem_id, equipe_desmontagem_id)
-        # print("Aluguel cadastrado com sucesso")
 
     @staticmethod
     def __correct_dates(data_montagem, data_desmontagem):
@@ -85,7 +84,16 @@ class AluguelController:
 
     @staticmethod
     def get_all():
-        return AluguelDatabase.get_all()
+        alugueis = AluguelDatabase.get_all()
+        for aluguel in alugueis:
+            aluguel_temp = list(aluguel)
+            data_montagem = datetime.datetime.fromtimestamp(aluguel_temp[2])
+            data_desmontagem = datetime.datetime.fromtimestamp(aluguel_temp[3])
+            aluguel_temp[2] = data_montagem
+            aluguel_temp[3] = data_desmontagem
+            aluguel = tuple(aluguel_temp)
+        
+        return alugueis
 
     @staticmethod
     def get_by_id(id):
