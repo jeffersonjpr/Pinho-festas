@@ -2,28 +2,27 @@ from src.database.pessoa_equipe_database import PessoaEquipeDatabase
 from src.database.aluguel_database import AluguelDatabase
 from src.database.brinquedo_database import BrinquedoDatabase
 from src.database.equipe_database import EquipeDatabase
+from src.controller.equipe_controller import EquipeController
+from src.controller.brinquedo_controller import BrinquedoController
 import datetime
 import time
 
 
 class AluguelController:
     @staticmethod
-    def insert(brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id):
+    def insert(brinquedo_id, data_montagem, data_desmontagem, id_montagem, id_desmontagem):
         data_montagem, data_desmontagem = AluguelController.__correct_dates(
             data_montagem, data_desmontagem)
-        AluguelController.__equipe_exists(equipe_montagem_id)
-        AluguelController.__equipe_exists(equipe_desmontagem_id)
-        AluguelController.__brinquedo_exists(brinquedo_id)
-        AluguelController.__verify_equipe_available(
-            equipe_montagem_id, data_montagem)
-        AluguelController.__verify_equipe_available(
-            equipe_desmontagem_id, data_desmontagem)
-        AluguelController.__verify_brinquedo_available(
+        EquipeController.is_equipe_ready(id_montagem)
+        EquipeController.is_equipe_ready(id_desmontagem)
+        EquipeController.is_equipe_available(id_montagem, data_montagem)
+        EquipeController.is_equipe_available(id_desmontagem, data_desmontagem)
+        BrinquedoController.does_brinquedo_exists(brinquedo_id)
+        BrinquedoController.is_brinquedo_available(
             brinquedo_id, data_montagem, data_desmontagem)
-
         AluguelDatabase.insert(brinquedo_id, data_montagem,
-                               data_desmontagem, equipe_montagem_id, equipe_desmontagem_id)
-        
+                               data_desmontagem, id_montagem, id_desmontagem)
+
         return "sucesso"
 
     @staticmethod
@@ -42,27 +41,13 @@ class AluguelController:
 
     staticmethod
 
-    def __verify_equipe_available(equipe_id, data_fim):
-        #data - 30 minutos
+    def is_equipe_available_in_this_date(equipe_id, data_fim):
+        # data - 30 minutos
         data_inicio = data_fim - 1800
         data_converted = datetime.datetime.fromtimestamp(data_fim)
         if AluguelDatabase.get_by_equipe_and_data_montagem(equipe_id, data_inicio, data_fim) or AluguelDatabase.get_by_equipe_data_desmontagem(equipe_id,  data_inicio, data_fim):
             raise Exception(
                 f"Equipe {equipe_id} não disponível em {data_converted}")
-
-    def __verify_brinquedo_available(brinquedo_id, data_montagem, data_desmontagem):
-        #data_montagem - 5 min
-        data_montagem_inicio = data_montagem - 300
-        #data_desmontagem + 5 min
-        data_desmontagem_fim = data_desmontagem + 300
-
-        if AluguelDatabase.get_by_brinquedo_datas(brinquedo_id, data_montagem_inicio, data_desmontagem_fim):
-            data_montagem_converted = datetime.datetime.fromtimestamp(
-                data_montagem)
-            data_desmontagem_converted = datetime.datetime.fromtimestamp(
-                data_desmontagem)
-            raise Exception(
-                f"Brinquedo {brinquedo_id} não disponível entre {data_montagem_converted} e {data_desmontagem_converted}")
 
     @staticmethod
     def delete(id):
@@ -94,22 +79,10 @@ class AluguelController:
             aluguel_temp[2] = data_montagem
             aluguel_temp[3] = data_desmontagem
             aluguel = tuple(aluguel_temp)
-        
+
         return alugueis
 
     @staticmethod
     def get_by_id(id):
         AluguelController.__aluguel_exists(id)
         return AluguelDatabase.get_by_id(id)
-
-    @staticmethod
-    def __brinquedo_exists(id):
-        if not BrinquedoDatabase.get_by_id(id):
-            raise Exception("Brinquedo não encontrado")
-
-    @staticmethod
-    def __equipe_exists(id):
-        if not EquipeDatabase.get_by_id(id):
-            raise Exception("Equipe não encontrada")
-        if not PessoaEquipeDatabase.get_by_equipe_id(id):
-            raise Exception("Equipe sem pessoas")
