@@ -1,5 +1,7 @@
 import sqlite3
 from sqlite3 import Error
+
+from src.controller.database_controller import DatabaseController
 from src.models import aluguel, brinquedo, equipe, pessoa, pessoa_equipe
 
 
@@ -8,7 +10,8 @@ class Database:
     db_cursor = None
 
     def __init__(self):
-        self.db_connection = self.create_connection("pinhofestas.db")
+        self.db_connection = self.create_connection(
+            DatabaseController.get_database_name())
         self.db_cursor = self.db_connection.cursor()
         self.initialize_tables()
 
@@ -16,7 +19,7 @@ class Database:
         connection = None
         try:
             connection = sqlite3.connect(db_file)
-            print(sqlite3.version)
+
         except Error as e:
             print(e)
 

@@ -1,13 +1,13 @@
-from src.database.brinquedo_database import BrinquedoDatabase
 import datetime
+
 from src.database.aluguel_database import AluguelDatabase
+from src.database.brinquedo_database import BrinquedoDatabase
 
 
 class BrinquedoController:
     @staticmethod
     def insert(nome, descricao, largura, altura, comprimento):
-        BrinquedoDatabase.insert(nome, descricao, largura, altura, comprimento)
-        # print("Brinquedo cadastrado com sucesso")
+        return BrinquedoDatabase.insert(nome, descricao, largura, altura, comprimento)
 
     @staticmethod
     def delete(id):
@@ -39,15 +39,16 @@ class BrinquedoController:
         return BrinquedoDatabase.get_by_id(id)
 
     def is_brinquedo_available(brinquedo_id, data_montagem, data_desmontagem):
-        # data_montagem - 5 min
-        data_montagem_inicio = data_montagem - 300
-        # data_desmontagem + 5 min
-        data_desmontagem_fim = data_desmontagem + 300
+        # data_montagem - 15 min
+        data_montagem = data_montagem - 900
+        # data_desmontagem + 15 min
+        data_desmontagem = data_desmontagem + 900
 
-        if AluguelDatabase.get_by_brinquedo_datas(brinquedo_id, data_montagem_inicio, data_desmontagem_fim):
-            data_montagem_converted = datetime.datetime.fromtimestamp(
-                data_montagem)
-            data_desmontagem_converted = datetime.datetime.fromtimestamp(
-                data_desmontagem)
-            raise Exception(
-                f"Brinquedo {brinquedo_id} não disponível entre {data_montagem_converted} e {data_desmontagem_converted}")
+        lista_alugueis = AluguelDatabase.get_by_brinquedo_id(brinquedo_id)
+        indice_montagem = 2
+        indice_desmontagem = 3
+
+        for aluguel in lista_alugueis:
+            if data_desmontagem >= aluguel[indice_montagem] and data_montagem <= aluguel[indice_desmontagem]:
+                raise Exception(
+                    f"Brinquedo {brinquedo_id} não disponível em {datetime.datetime.fromtimestamp(data_montagem)}")

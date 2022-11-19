@@ -5,14 +5,19 @@ class AluguelDatabase:
     database = Database()
 
     @staticmethod
-    def insert(brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id):
+    def insert(brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id, local):
+        if not local:
+            raise Exception("Local não pode ser vazio")
+
         try:
             AluguelDatabase.database.db_cursor.execute(
-                "INSERT INTO aluguel (brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id) VALUES (?, ?, ?, ?, ?)",
-                (brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id))
+                "INSERT INTO aluguel (brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id, local) VALUES (?, ?, ?, ?, ?, ?)",
+                (brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id, local))
             AluguelDatabase.database.db_connection.commit()
         except Exception as e:
             print("AluguelDatabase", e)
+
+        return AluguelDatabase.database.db_cursor.lastrowid
 
     @staticmethod
     def delete(id):
@@ -61,7 +66,7 @@ class AluguelDatabase:
             return alugueis
         except Exception as e:
             print("AluguelDatabase", e)
-    
+
     @staticmethod
     def get_by_equipe_data_desmontagem(equipe_id, data_inicio, data_fim):
         try:
@@ -71,12 +76,22 @@ class AluguelDatabase:
             return alugueis
         except Exception as e:
             print("AluguelDatabase", e)
-    
+
     @staticmethod
     def get_by_brinquedo_datas(brinquedo_id, data_montagem, data_desmontagem):
         try:
             AluguelDatabase.database.db_cursor.execute(
                 "SELECT * FROM aluguel WHERE brinquedo_id = ? AND data_montagem BETWEEN ? AND ?", (brinquedo_id, data_montagem, data_desmontagem))
+            alugueis = AluguelDatabase.database.db_cursor.fetchall()
+            return alugueis
+        except Exception as e:
+            print("AluguelDatabase", e)
+
+    @staticmethod
+    def get_by_brinquedo_id(brinquedo_id):
+        try:
+            AluguelDatabase.database.db_cursor.execute(
+                "SELECT * FROM aluguel WHERE brinquedo_id = ?", (brinquedo_id,))
             alugueis = AluguelDatabase.database.db_cursor.fetchall()
             return alugueis
         except Exception as e:

@@ -13,6 +13,8 @@ class PessoaDatabase:
         except Exception as e:
             print("PessoaDatabase", e)
 
+        return PessoaDatabase.database.db_cursor.lastrowid
+
     @staticmethod
     def delete(id):
         try:

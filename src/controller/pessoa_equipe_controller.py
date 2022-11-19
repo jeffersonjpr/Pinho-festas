@@ -1,6 +1,6 @@
-from src.database.pessoa_equipe_database import PessoaEquipeDatabase
-from src.controller.pessoa_controller import PessoaController
 from src.controller.equipe_controller import EquipeController
+from src.controller.pessoa_controller import PessoaController
+from src.database.pessoa_equipe_database import PessoaEquipeDatabase
 
 
 class PessoaEquipeController:

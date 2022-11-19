@@ -13,6 +13,8 @@ class BrinquedoDatabase:
         except Exception as e:
             print("Brinquedo insert" + str(e))
 
+        return BrinquedoDatabase.database.db_cursor.lastrowid
+
     @staticmethod
     def delete(id):
         try:
@@ -25,7 +27,8 @@ class BrinquedoDatabase:
     @staticmethod
     def get_all():
         try:
-            BrinquedoDatabase.database.db_cursor.execute("SELECT * FROM brinquedo")
+            BrinquedoDatabase.database.db_cursor.execute(
+                "SELECT * FROM brinquedo")
             brinquedos = BrinquedoDatabase.database.db_cursor.fetchall()
             return brinquedos
         except Exception as e:

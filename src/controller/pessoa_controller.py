@@ -3,13 +3,13 @@ from src.database.pessoa_equipe_database import PessoaEquipeDatabase
 
 
 class PessoaController:
+
     @staticmethod
     def insert(nome, cpf, telefone):
         if PessoaDatabase.get_by_cpf(cpf):
             raise Exception("CPF já cadastrado")
 
-        PessoaDatabase.insert(nome, cpf, telefone)
-        # print("Pessoa cadastrada com sucesso")
+        return PessoaDatabase.insert(nome, cpf, telefone)
 
     @staticmethod
     def delete(id):
@@ -18,14 +18,12 @@ class PessoaController:
         PessoaController.__pessoa_exists(id)
 
         PessoaDatabase.delete(id)
-        # print("Pessoa deletada com sucesso")
 
     @staticmethod
     def update(id, nome, cpf, telefone):
         PessoaController.__pessoa_exists(id)
 
         PessoaDatabase.update(id, nome, cpf, telefone)
-        # print("Pessoa atualizada com sucesso")
 
     @staticmethod
     def __pessoa_exists(id):

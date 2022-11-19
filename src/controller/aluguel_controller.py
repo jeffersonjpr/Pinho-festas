@@ -1,16 +1,17 @@
-from src.database.pessoa_equipe_database import PessoaEquipeDatabase
+import datetime
+import time
+
+from src.controller.brinquedo_controller import BrinquedoController
+from src.controller.equipe_controller import EquipeController
 from src.database.aluguel_database import AluguelDatabase
 from src.database.brinquedo_database import BrinquedoDatabase
 from src.database.equipe_database import EquipeDatabase
-from src.controller.equipe_controller import EquipeController
-from src.controller.brinquedo_controller import BrinquedoController
-import datetime
-import time
+from src.database.pessoa_equipe_database import PessoaEquipeDatabase
 
 
 class AluguelController:
     @staticmethod
-    def insert(brinquedo_id, data_montagem, data_desmontagem, id_montagem, id_desmontagem):
+    def insert(brinquedo_id, data_montagem, data_desmontagem, id_montagem, id_desmontagem, local):
         data_montagem, data_desmontagem = AluguelController.__correct_dates(
             data_montagem, data_desmontagem)
         EquipeController.is_equipe_ready(id_montagem)
@@ -20,10 +21,9 @@ class AluguelController:
         BrinquedoController.does_brinquedo_exists(brinquedo_id)
         BrinquedoController.is_brinquedo_available(
             brinquedo_id, data_montagem, data_desmontagem)
-        AluguelDatabase.insert(brinquedo_id, data_montagem,
-                               data_desmontagem, id_montagem, id_desmontagem)
 
-        return "sucesso"
+        return AluguelDatabase.insert(brinquedo_id, data_montagem,
+                                      data_desmontagem, id_montagem, id_desmontagem, local)
 
     @staticmethod
     def __correct_dates(data_montagem, data_desmontagem):

@@ -1,11 +1,13 @@
 from ast import Delete
+
 from src.configs.database import Database
-from src.database.pessoa_database import PessoaDatabase
-from src.controller.equipe_controller import EquipeController
-from src.controller.pessoa_controller import PessoaController
 from src.controller.aluguel_controller import AluguelController
 from src.controller.brinquedo_controller import BrinquedoController
+from src.controller.equipe_controller import EquipeController
+from src.controller.pessoa_controller import PessoaController
 from src.controller.pessoa_equipe_controller import PessoaEquipeController
+from src.database.pessoa_database import PessoaDatabase
+
 # from colorama import Fore
 
 print("Testes básicos")

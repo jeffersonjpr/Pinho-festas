@@ -13,10 +13,13 @@ class EquipeDatabase:
         except Exception as e:
             print(e)
 
+        return EquipeDatabase.database.db_cursor.lastrowid
+
     @staticmethod
     def delete(id):
         try:
-            EquipeDatabase.database.db_cursor.execute("DELETE FROM equipe WHERE id = ?", (id))
+            EquipeDatabase.database.db_cursor.execute(
+                "DELETE FROM equipe WHERE id = ?", (id))
             EquipeDatabase.database.db_connection.commit()
         except Exception as e:
             print(e)
