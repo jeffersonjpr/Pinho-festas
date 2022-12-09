@@ -72,7 +72,7 @@ class TestAluguelController(unittest.TestCase):
     def test_insert_invalid_data_montagem_maior_que_desmontagem(self):
         with self.assertRaises(Exception):
             AluguelController.insert(
-                self.brinquedo1, "02/02/2023 18:30", "02/02/2023 18:29", self.equipe1, self.equipe2, "Rua x")
+                self.brinquedo1, "02/02/2023 18:25", "02/02/2023 18:29", self.equipe1, self.equipe2, "Rua x")
 
     def test_insert_invalid_local(self):
         with self.assertRaises(Exception):
@@ -105,8 +105,8 @@ class TestAluguelController(unittest.TestCase):
         AluguelController.insert(
             self.brinquedo1, "02/02/2027 18:00", "02/02/2027 23:00", self.equipe1, self.equipe1, "Rua x")
         with self.assertRaises(Exception):
-            AluguelController.insert(self.brinquedo1, "02/02/2027 18:20",
-                                     "02/02/2027 22:40", self.equipe1, self.equipe1, "Rua x")
+            AluguelController.insert(self.brinquedo1, "02/02/2029 18:20",
+                                     "02/02/2029 22:40", self.equipe1, self.equipe1, "Rua x")
 
 
 if __name__ == '__main__':
