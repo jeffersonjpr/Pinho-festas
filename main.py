@@ -20,7 +20,7 @@ except Exception as e:
 # CADASTRANDO EQUIPE 1
 try:
     
-    PessoaController.insert("jef", "123", "322323") # 1
+    PessoaController.insert("jef", "123", "322323", "123") # 1
     EquipeController.insert("Equipe 1", "EQUIPE CIDADE 1") # 1
     PessoaEquipeController.insert(1, 1)
     print("Equipe 1 cadastrada com sucesso")
@@ -29,7 +29,7 @@ except Exception as e:
 
 # CADASTRANDO EQUIPE 2
 try:
-    PessoaController.insert("isa", "321", "322323") # 2
+    PessoaController.insert("isa", "321", "322323", "123") # 2
     EquipeController.insert("Equipe 2", "EQUIPE CIDADE 2") # 2
     PessoaEquipeController.insert(2, 2)
     print("Equipe 2 cadastrada com sucesso")
@@ -38,28 +38,28 @@ except Exception as e:
 
 # CADASTRO ALUGUEL 1
 try:
-    AluguelController.insert(1, "01/01/2022 18:30", "01/01/2022 20:30", 1, 1)
+    AluguelController.insert(1, "01/01/2022 18:30", "01/01/2022 20:30", 1, 1, "rua x")
     print("Aluguel 1 cadastrado com sucesso")
 except Exception as e:
     print("Esse erro não deve aparecer:", e)
 
 # CADASTRO PESSOA REPETIDA
 try:
-    PessoaController.insert("jef", "123", "322323")
+    PessoaController.insert("jef", "123", "322323", "123")
     print("Esse teste não deveria passar")
 except Exception as e:
     print("Esse erro deve aparecer (CPF já cadastrado):", e)
 
 # CADASTRO BRINQUEDO INDISPONIVEL
 try:
-    AluguelController.insert(1, "01/01/2022 18:30", "01/01/2022 22:30", 2, 2)
+    AluguelController.insert(1, "01/01/2022 18:30", "01/01/2022 22:30", 2, 2, "rua x")
     print("Esse teste não deveria passar")
 except Exception as e:
     print("Esse erro deve aparecer (Brinquedo 1 não disponível):", e)
 
 # CADASTRO EQUIPE OCUPADA
 try:
-    AluguelController.insert(2, "01/01/2022 18:30", "01/01/2022 22:30", 1, 1)
+    AluguelController.insert(2, "01/01/2022 18:30", "01/01/2022 22:30", 1, 1, "rua x")
     print("Esse teste não deveria passar")
 except Exception as e:
     print("Esse erro deve aparecer (Equipe 1 não disponível):", e)

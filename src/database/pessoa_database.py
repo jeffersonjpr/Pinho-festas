@@ -5,10 +5,10 @@ class PessoaDatabase:
     database = Database()
 
     @staticmethod
-    def insert(nome, cpf, telefone):
+    def insert(nome, cpf, telefone, senha):
         try:
             PessoaDatabase.database.db_cursor.execute(
-                "INSERT INTO pessoa (nome, cpf, telefone) VALUES (?, ?, ?)", (nome, cpf, telefone))
+                "INSERT INTO pessoa (nome, cpf, telefone, senha) VALUES (?, ?, ?, ?)", (nome, cpf, telefone, senha))
             PessoaDatabase.database.db_connection.commit()
         except Exception as e:
             print("PessoaDatabase", e)
@@ -44,10 +44,10 @@ class PessoaDatabase:
             print("PessoaDatabase", e)
 
     @staticmethod
-    def update(id, nome, cpf, telefone):
+    def update(id, nome, cpf, telefone, senha):
         try:
             PessoaDatabase.database.db_cursor.execute(
-                "UPDATE pessoa SET nome = ?, cpf = ?, telefone = ? WHERE id = ?", (nome, cpf, telefone, id))
+                "UPDATE pessoa SET nome = ?, cpf = ?, telefone = ?, senha = ? WHERE id = ?", (nome, cpf, telefone, senha, id))
             PessoaDatabase.database.db_connection.commit()
         except Exception as e:
             print("PessoaDatabase", e)
