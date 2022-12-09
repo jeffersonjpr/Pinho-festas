@@ -1,6 +1,3 @@
-from ast import Delete
-
-from src.configs.database import Database
 from src.controller.aluguel_controller import AluguelController
 from src.controller.brinquedo_controller import BrinquedoController
 from src.controller.equipe_controller import EquipeController
