@@ -3,7 +3,6 @@ from src.controller.brinquedo_controller import BrinquedoController
 from src.controller.equipe_controller import EquipeController
 from src.controller.pessoa_controller import PessoaController
 from src.controller.pessoa_equipe_controller import PessoaEquipeController
-from src.database.pessoa_database import PessoaDatabase
 
 # from colorama import Fore
 
