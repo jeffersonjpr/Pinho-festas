@@ -7,14 +7,17 @@ from src.database.brinquedo_database import BrinquedoDatabase
 class BrinquedoController:
     @staticmethod
     def insert(nome, descricao, largura, altura, comprimento):
-        return BrinquedoDatabase.insert(nome, descricao, largura, altura, comprimento)
+        try:
+            BrinquedoDatabase.insert(nome, descricao, largura, altura, comprimento)
+        except Exception as e:
+            raise Exception(e)
 
     @staticmethod
     def delete(id):
+        id = int(id)
         BrinquedoController.does_brinquedo_exists(id)
 
         BrinquedoDatabase.delete(id)
-        # print("Brinquedo deletado com sucesso")
 
     @staticmethod
     def update(id, nome, descricao, largura, altura, comprimento):
@@ -22,7 +25,6 @@ class BrinquedoController:
 
         BrinquedoDatabase.update(
             id, nome, descricao, largura, altura, comprimento)
-        # print("Brinquedo atualizado com sucesso")
 
     @staticmethod
     def does_brinquedo_exists(id):

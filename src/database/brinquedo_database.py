@@ -19,10 +19,11 @@ class BrinquedoDatabase:
     def delete(id):
         try:
             BrinquedoDatabase.database.db_cursor.execute(
-                "DELETE FROM brinquedo WHERE id = ?", (id))
+                "DELETE FROM brinquedo WHERE id = ?", (id,))
             BrinquedoDatabase.database.db_connection.commit()
         except Exception as e:
-            print("Brinquedo database", e)
+            # print("Brinquedo database", e)
+            raise Exception(e)
 
     @staticmethod
     def get_all():
@@ -32,7 +33,7 @@ class BrinquedoDatabase:
             brinquedos = BrinquedoDatabase.database.db_cursor.fetchall()
             return brinquedos
         except Exception as e:
-            print("Brinquedo database", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_id(id):

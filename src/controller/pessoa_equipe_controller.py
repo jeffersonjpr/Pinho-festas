@@ -10,7 +10,7 @@ class PessoaEquipeController:
         PessoaEquipeController.__equipe_exists(equipe_id)
 
         if PessoaEquipeDatabase.get_by_pessoa_id(pessoa_id):
-            raise Exception("Pessoa já está em uma equipe")
+            raise Exception("Colaborador já está em uma equipe")
 
         PessoaEquipeDatabase.insert(pessoa_id, equipe_id)
         # print("Pessoa adicionada a equipe com sucesso")
@@ -20,8 +20,28 @@ class PessoaEquipeController:
         PessoaEquipeController.__pessoa_equipe_exists(id)
 
         PessoaEquipeDatabase.delete(id)
-        # print("Pessoa removida da equipe com sucesso")
 
+    
+    @staticmethod
+    def get_pessoa_ids_from_equipe(equipe_id):
+        PessoaEquipeController.__equipe_exists(equipe_id)
+        pessoas = PessoaEquipeDatabase.get_pessoas_from_equipe(equipe_id)
+        lista_ids = []
+        for pessoa in pessoas:
+            lista_ids.append(pessoa[1])
+        if lista_ids:
+            return lista_ids
+        raise Exception("Equipe sem pessoas")
+    
+    @staticmethod
+    def delete_with_pessoa_id(pessoa_id):
+        PessoaEquipeController.get_pesoaequipe_by_pessoa_id(pessoa_id)
+
+        if PessoaEquipeDatabase.get_by_pessoa_id(pessoa_id):
+            raise Exception("Colaborador não está em uma equipe")
+        
+        PessoaEquipeDatabase.delete_with_pessoa_id(pessoa_id)
+    
     @staticmethod
     def __pessoa_equipe_exists(id):
         if not PessoaEquipeDatabase.get_by_id(id):
@@ -39,7 +59,7 @@ class PessoaEquipeController:
     @staticmethod
     def __pessoa_exists(id):
         if not PessoaController.get_by_id(id):
-            raise Exception("Pessoa não encontrada")
+            raise Exception("Colaborador não encontrado")
 
     @staticmethod
     def __equipe_exists(id):
@@ -55,3 +75,11 @@ class PessoaEquipeController:
     def get_by_equipe_id(equipe_id):
         PessoaEquipeController.__equipe_exists(equipe_id)
         return PessoaEquipeDatabase.get_by_equipe_id(equipe_id)
+
+    @staticmethod
+    def get_pesoaequipe_by_pessoa_id(pessoa_id):
+        PessoaEquipeController.__pessoa_exists(pessoa_id)
+        pessoaequipe = PessoaEquipeDatabase.get_pesoaequipe_by_pessoa_id(pessoa_id)
+        if not pessoaequipe:
+            raise Exception("Colaborador não está em uma equipe")
+        return pessoaequipe

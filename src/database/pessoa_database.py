@@ -31,7 +31,7 @@ class PessoaDatabase:
             pessoas = PessoaDatabase.database.db_cursor.fetchall()
             return pessoas
         except Exception as e:
-            print("PessoaDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_id(id):

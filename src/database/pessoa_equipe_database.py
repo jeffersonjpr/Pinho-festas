@@ -11,17 +11,37 @@ class PessoaEquipeDatabase:
                 "INSERT INTO pessoa_equipe (pessoa_id, equipe_id) VALUES (?, ?)", (pessoa_id, equipe_id))
             PessoaEquipeDatabase.database.db_connection.commit()
         except Exception as e:
-            print("PessoaEquipeDatabase (insert)", e)
+            raise Exception(e)
 
     @staticmethod
     def delete(id):
         try:
             PessoaEquipeDatabase.database.db_cursor.execute(
-                "DELETE FROM pessoa_equipe WHERE id = ?", (id))
+                "DELETE FROM pessoa_equipe WHERE id = ?", (id,))
             PessoaEquipeDatabase.database.db_connection.commit()
         except Exception as e:
-            print("PessoaEquipeDatabase", e)
+            raise Exception(e)
 
+    @staticmethod
+    def delete_with_pessoa_id(pessoa_id):
+        try:
+            PessoaEquipeDatabase.database.db_cursor.execute(
+                "DELETE FROM pessoa_equipe WHERE pessoa_id = ?", (pessoa_id,))
+            PessoaEquipeDatabase.database.db_connection.commit()
+        except Exception as e:
+            raise Exception(e)
+
+    
+    @staticmethod
+    def get_pessoas_from_equipe(equipe_id):
+        try:
+            PessoaEquipeDatabase.database.db_cursor.execute(
+                "SELECT pessoa_id FROM pessoa_equipe WHERE equipe_id = ?", (equipe_id,))
+            pessoa_ids = PessoaEquipeDatabase.database.db_cursor.fetchall()
+            return pessoa_ids
+        except Exception as e:
+            raise Exception(e)
+    
     @staticmethod
     def get_all():
         try:
@@ -29,7 +49,7 @@ class PessoaEquipeDatabase:
             pessoa_equipes = PessoaEquipeDatabase.database.db_cursor.fetchall()
             return pessoa_equipes
         except Exception as e:
-            print("PessoaEquipeDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_id(id):
@@ -39,8 +59,18 @@ class PessoaEquipeDatabase:
             pessoa_equipe = PessoaEquipeDatabase.database.db_cursor.fetchone()
             return pessoa_equipe
         except Exception as e:
-            print("PessoaEquipeDatabase", e)
+            raise Exception(e)
 
+    @staticmethod
+    def get_pesoaequipe_by_pessoa_id(pessoa_id):
+        try:
+            PessoaEquipeDatabase.database.db_cursor.execute(
+                "SELECT * FROM pessoa_equipe WHERE pessoa_id = ?", (pessoa_id,))
+            pessoa_equipe = PessoaEquipeDatabase.database.db_cursor.fetchone()
+            return pessoa_equipe
+        except Exception as e:
+            raise Exception(e)
+    
     @staticmethod
     def remove_by_pessoa_id(pessoa_id):
         try:
@@ -48,7 +78,7 @@ class PessoaEquipeDatabase:
                 "DELETE FROM pessoa_equipe WHERE pessoa_id = ?", (pessoa_id,))
             PessoaEquipeDatabase.database.db_connection.commit()
         except Exception as e:
-            print("PessoaEquipeDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_pessoa_id(pessoa_id):
@@ -58,7 +88,7 @@ class PessoaEquipeDatabase:
             pessoa_equipe = PessoaEquipeDatabase.database.db_cursor.fetchone()
             return pessoa_equipe
         except Exception as e:
-            print("PessoaEquipeDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_equipe_id(equipe_id):
@@ -68,4 +98,4 @@ class PessoaEquipeDatabase:
             pessoa_equipe = PessoaEquipeDatabase.database.db_cursor.fetchone()
             return pessoa_equipe
         except Exception as e:
-            print("PessoaEquipeDatabase (getbyequipeid)", e)
+            raise Exception(e)

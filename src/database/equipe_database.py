@@ -11,7 +11,7 @@ class EquipeDatabase:
                 "INSERT INTO equipe (nome, descricao) VALUES (?, ?)", (nome, descricao))
             EquipeDatabase.database.db_connection.commit()
         except Exception as e:
-            print(e)
+            raise Exception(e)
 
         return EquipeDatabase.database.db_cursor.lastrowid
 
@@ -19,10 +19,10 @@ class EquipeDatabase:
     def delete(id):
         try:
             EquipeDatabase.database.db_cursor.execute(
-                "DELETE FROM equipe WHERE id = ?", (id))
+                "DELETE FROM equipe WHERE id = ?", (id,))
             EquipeDatabase.database.db_connection.commit()
         except Exception as e:
-            print(e)
+            raise Exception(e)
 
     @staticmethod
     def get_all():
@@ -31,7 +31,7 @@ class EquipeDatabase:
             equipes = EquipeDatabase.database.db_cursor.fetchall()
             return equipes
         except Exception as e:
-            print(e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_id(id):
@@ -41,7 +41,7 @@ class EquipeDatabase:
             equipe = EquipeDatabase.database.db_cursor.fetchone()
             return equipe
         except Exception as e:
-            print(e)
+            raise Exception(e)
 
     @staticmethod
     def update(id, nome, descricao):
@@ -50,4 +50,4 @@ class EquipeDatabase:
                 "UPDATE equipe SET nome = ?, descricao = ? WHERE id = ?", (nome, descricao, id))
             EquipeDatabase.database.db_connection.commit()
         except Exception as e:
-            print(e)
+            raise Exception(e)
