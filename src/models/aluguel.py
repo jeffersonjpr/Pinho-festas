@@ -6,8 +6,9 @@ aluguel = """
         data_desmontagem INTEGER NOT NULL,
         equipe_montagem_id INTEGER NOT NULL,
         equipe_desmontagem_id INTEGER NOT NULL,
-        local TEXT NOT NULL,
+        id_cliente INTEGER NOT NULL,
         FOREIGN KEY (brinquedo_id) REFERENCES brinquedo(id),
         FOREIGN KEY (equipe_montagem_id) REFERENCES equipe(id),
-        FOREIGN KEY (equipe_desmontagem_id) REFERENCES equipe(id)
+        FOREIGN KEY (equipe_desmontagem_id) REFERENCES equipe(id),
+        FOREIGN KEY (id_cliente) REFERENCES cliente(id)
     );"""

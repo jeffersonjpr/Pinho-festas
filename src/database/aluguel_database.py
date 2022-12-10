@@ -15,7 +15,7 @@ class AluguelDatabase:
                 (brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id, local))
             AluguelDatabase.database.db_connection.commit()
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
         return AluguelDatabase.database.db_cursor.lastrowid
 
@@ -23,10 +23,10 @@ class AluguelDatabase:
     def delete(id):
         try:
             AluguelDatabase.database.db_cursor.execute(
-                "DELETE FROM aluguel WHERE id = ?", (id))
+                "DELETE FROM aluguel WHERE id = ?", (id,))
             AluguelDatabase.database.db_connection.commit()
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_all():
@@ -35,7 +35,7 @@ class AluguelDatabase:
             alugueis = AluguelDatabase.database.db_cursor.fetchall()
             return alugueis
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_id(id):
@@ -45,7 +45,7 @@ class AluguelDatabase:
             aluguel = AluguelDatabase.database.db_cursor.fetchone()
             return aluguel
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def update(id, brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id):
@@ -55,7 +55,7 @@ class AluguelDatabase:
                 (brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id, id))
             AluguelDatabase.database.db_connection.commit()
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_equipe_and_data_montagem(equipe_id, data_inicio, data_fim):
@@ -65,7 +65,7 @@ class AluguelDatabase:
             alugueis = AluguelDatabase.database.db_cursor.fetchall()
             return alugueis
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_equipe_data_desmontagem(equipe_id, data_inicio, data_fim):
@@ -75,7 +75,7 @@ class AluguelDatabase:
             alugueis = AluguelDatabase.database.db_cursor.fetchall()
             return alugueis
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_brinquedo_datas(brinquedo_id, data_montagem, data_desmontagem):
@@ -85,7 +85,7 @@ class AluguelDatabase:
             alugueis = AluguelDatabase.database.db_cursor.fetchall()
             return alugueis
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
 
     @staticmethod
     def get_by_brinquedo_id(brinquedo_id):
@@ -95,4 +95,24 @@ class AluguelDatabase:
             alugueis = AluguelDatabase.database.db_cursor.fetchall()
             return alugueis
         except Exception as e:
-            print("AluguelDatabase", e)
+            raise Exception(e)
+
+    @staticmethod
+    def get_by_equipe_montagem_id(equipe_id):
+        try:
+            AluguelDatabase.database.db_cursor.execute(
+                "SELECT * FROM aluguel WHERE equipe_montagem_id = ?", (equipe_id,))
+            alugueis = AluguelDatabase.database.db_cursor.fetchall()
+            return alugueis
+        except Exception as e:
+            raise Exception(e)
+        
+    @staticmethod
+    def get_by_equipe_desmontagem_id(equipe_id):
+        try:
+            AluguelDatabase.database.db_cursor.execute(
+                "SELECT * FROM aluguel WHERE equipe_desmontagem_id = ?", (equipe_id,))
+            alugueis = AluguelDatabase.database.db_cursor.fetchall()
+            return alugueis
+        except Exception as e:
+            raise Exception(e)

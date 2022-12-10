@@ -44,7 +44,7 @@ class EquipeController:
             raise Exception("Equipe não encontrada")
         if not PessoaEquipeDatabase.get_by_equipe_id(id):
             raise Exception("Equipe sem pessoas")
-
+        
     def is_equipe_available(equipe_id, data):
         # |~~~mont~~~|data|~~~desm~~~|
         data_inicio = data - 900

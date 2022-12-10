@@ -4,6 +4,9 @@ from src.controller.cliente_controller import ClienteController
 from src.controller.equipe_controller import EquipeController
 from src.controller.pessoa_controller import PessoaController
 from src.controller.pessoa_equipe_controller import PessoaEquipeController
+from src.pages.cliente_page import cliente_page
+from src.pages.aluguel_page import aluguel_page
+from src.pages.colaborador_page import colaborador_login_page
 from colorama import Fore, Back, Style
 
 # variaveis
@@ -13,6 +16,7 @@ BRINQUEDO_CABECALHO = ["id", "nome", "descrição",
 PESSOA_CABECALHO = ["id", "nome", "cpf", "telefone"]
 PESSOA_EQUIPE_CABECALHO = ["id", "pessoa_id", "equipe_id"]
 EQUIPE_CABECALHO = ["id", "nome", "descrição"]
+
 
 def red_text(msg):
     return Fore.RED + msg + Style.RESET_ALL
@@ -56,8 +60,10 @@ def titulo(msg: str):
 def insira_texto(msg):
     return green_text("Insira ") + msg + ": "
 
+
 def confirm():
     return input("Confirmar? (s/n): ").lower() == "s"
+
 
 def try_catch_error(msg, func, *args):
     try:
@@ -89,7 +95,7 @@ def int_input(msg):
 def login_menu():
     print_menu("1", "Login")
     print_menu("2", "Cadastrar")
-    print_menu("3", "Sair")
+    print_menu("0", "Sair")
     return int_input("Escolha uma opção: ")
 
 
@@ -105,11 +111,11 @@ def initial_page():
                 if PessoaController.verify_admin(logado[2]):
                     admin_page()
                 else:
-                    user_page()
-
+                    colaborador_login_page(logado)
+                    logado = None
         elif opcao == 2:
             cadastro_pessoa_form()
-        elif opcao == 3:
+        elif opcao == 0:
             break
         else:
             print(red_text("ERRO") + ": Opção inválida.")
@@ -121,9 +127,8 @@ def admin_menu():
     print_menu("3", "Administrar equipes")
     print_menu("4", "Administrar clientes")
     print_menu("5", "Administrar aluguéis")
-    print_menu("6", "Editar perfil")
-    print_menu("7", "Sair")
-    return int_input("Escolha uma opção: ")
+    print_menu("0", "Sair")
+    return int_input("Escolha uma opção:")
 
 
 def brinquedo_menu():
@@ -155,7 +160,9 @@ def brinquedo_page():
 
 def editar_brinquedo_form():
     id = int_input(insira_texto("id do brinquedo"))
-    brinquedo = BrinquedoController.get_by_id(id)
+    brinquedo = try_catch_error(None, BrinquedoController.get_by_id, id)
+    if not brinquedo:
+        return
     print_tabela(BRINQUEDO_CABECALHO, [brinquedo])
 
     nome = input(insira_texto("nome")) if input(
@@ -179,7 +186,9 @@ def remover_brinquedo_form():
     if brinquedo:
         print(red_text("ATENÇÃO") + ": Você está prestes a remover o brinquedo " +
               brinquedo[1] + " - " + brinquedo[2] + " !")
-        try_catch_error("Brinquedo removido com sucesso.", BrinquedoController.delete, id) if confirm() else print(green_text("Operação cancelada."))
+        try_catch_error("Brinquedo removido com sucesso.", BrinquedoController.delete,
+                        id) if confirm() else print(green_text("Operação cancelada."))
+
 
 def cadastro_brinquedo_form():
     titulo("Cadastro de brinquedo")
@@ -197,7 +206,8 @@ def cadastro_brinquedo_form():
 def listar_brinquedos():
     titulo("Lista de brinquedos")
     brinquedos = BrinquedoController.get_all()
-    print_tabela(BRINQUEDO_CABECALHO, brinquedos) if brinquedos else print_error("Nenhum brinquedo cadastrado.")
+    print_tabela(BRINQUEDO_CABECALHO, brinquedos) if brinquedos else print_error(
+        "Nenhum brinquedo cadastrado.")
 
 
 def colaborador_menu():
@@ -205,6 +215,7 @@ def colaborador_menu():
     print_menu("2", "Inserir colaborador na equipe")
     print_menu("3", "Remover colaborador da equipe")
     print_menu("4", "Voltar")
+
 
 def colaborador_page():
     while True:
@@ -222,27 +233,33 @@ def colaborador_page():
         else:
             print_error("Opção inválida.")
 
+
 def listar_colaboradores():
     colaboradores = PessoaController.get_all()
-    print_tabela(PESSOA_CABECALHO, colaboradores) if colaboradores else print_error("Nenhum colaborador cadastrado.")
-    
+    print_tabela(PESSOA_CABECALHO, colaboradores) if colaboradores else print_error(
+        "Nenhum colaborador cadastrado.")
+
+
 def inserir_colaborador_equipe_form():
     id_colaborador = int_input(insira_texto("id do colaborador"))
-    
-    colaborador = try_catch_error(None, PessoaController.get_by_id, id_colaborador)
+
+    colaborador = try_catch_error(
+        None, PessoaController.get_by_id, id_colaborador)
     if not colaborador:
         return
     elif PessoaController.verify_admin(colaborador[2]):
         print_error("Não é possível inserir administradores em equipes.")
         return
-    
+
     id_equipe = int_input(insira_texto("id da equipe"))
-    try_catch_error("Colaborador inserido na equipe com sucesso!", PessoaEquipeController.insert, id_colaborador, id_equipe)
+    try_catch_error("Colaborador inserido na equipe com sucesso!",
+                    PessoaEquipeController.insert, id_colaborador, id_equipe)
+
 
 def remover_colaborador_equipe_form():
     id_colaborador = int_input(insira_texto("id do colaborador"))
-    try_catch_error("Colaborador removido da equipe com sucesso!", PessoaEquipeController.delete_with_pessoa_id, id_colaborador)
-
+    try_catch_error("Colaborador removido da equipe com sucesso!",
+                    PessoaEquipeController.delete_with_pessoa_id, id_colaborador)
 
 
 def equipe_menu():
@@ -251,7 +268,8 @@ def equipe_menu():
     print_menu("3", "Remover equipe")
     print_menu("4", "Colaboradores da equipe")
     print_menu("5", "Voltar")
-    
+
+
 def equipe_page():
     while True:
         titulo("administração de equipes")
@@ -270,32 +288,43 @@ def equipe_page():
         else:
             print_error("Opção inválida.")
 
+
 def listar_equipes():
     equipes = EquipeController.get_all()
-    print_tabela(EQUIPE_CABECALHO, equipes) if equipes else print_error("Nenhuma equipe cadastrada.")
+    print_tabela(EQUIPE_CABECALHO, equipes) if equipes else print_error(
+        "Nenhuma equipe cadastrada.")
+
 
 def inserir_equipe_form():
     nome = input(insira_texto("nome"))
     descricao = input(insira_texto("descrição"))
-    try_catch_error("Equipe cadastrada com sucesso!", EquipeController.insert, nome, descricao)
-    
+    try_catch_error("Equipe cadastrada com sucesso!",
+                    EquipeController.insert, nome, descricao)
+
+
 def remover_equipe_form():
     id = int_input(insira_texto("id da equipe"))
     equipe = try_catch_error(None, EquipeController.get_by_id, id)
     if equipe:
         print(red_text("ATENÇÃO") + ": Você está prestes a remover a equipe " +
               equipe[1] + " - " + equipe[2] + " !")
-        try_catch_error("Equipe removida com sucesso!", EquipeController.delete, id) if confirm() else print(green_text("Operação cancelada."))
+        try_catch_error("Equipe removida com sucesso!", EquipeController.delete,
+                        id) if confirm() else print(green_text("Operação cancelada."))
+
 
 def listar_colaboradores_equipe_form():
     id_equipe = int_input(insira_texto("id da equipe"))
-    lista_ids = try_catch_error(None, PessoaEquipeController.get_pessoa_ids_from_equipe, id_equipe)
+    lista_ids = try_catch_error(
+        None, PessoaEquipeController.get_pessoa_ids_from_equipe, id_equipe)
     if not lista_ids:
         return
     lista_colaboredores = []
     for id in lista_ids:
-        lista_colaboredores.append(try_catch_error(None, PessoaController.get_by_id_clean, id))
-    print_tabela(PESSOA_CABECALHO, lista_colaboredores) if lista_colaboredores else print_error("Nenhum colaborador cadastrado nessa equipe.")
+        lista_colaboredores.append(try_catch_error(
+            None, PessoaController.get_by_id_clean, id))
+    print_tabela(PESSOA_CABECALHO, lista_colaboredores) if lista_colaboredores else print_error(
+        "Nenhum colaborador cadastrado nessa equipe.")
+
 
 def admin_page():
     global logado
@@ -310,17 +339,20 @@ def admin_page():
         elif opcao == 3:
             equipe_page()
         elif opcao == 4:
-            pass
+            cliente_page()
+        elif opcao == 5:
+            aluguel_page()
+        elif opcao == 0:
+            logado = None
+            break
         else:
             print_error("Opção inválida.")
-
-
 
 
 def print_tabela(nomes, conteudos):
     espacos_colunas = [0] * len(nomes)
     offset = 5
-    
+
     for conteudo in conteudos:
         for i in range(len(conteudo)):
             if len(str(conteudo[i])) + offset > espacos_colunas[i]:
@@ -354,7 +386,6 @@ def cadastro_pessoa_form():
 
     try_catch_error("Conta cadastrada com sucesso!",
                     PessoaController.insert, nome, cpf, telefone, senha)
-
 
 def login_form():
     titulo("login")

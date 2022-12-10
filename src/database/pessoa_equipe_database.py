@@ -36,7 +36,7 @@ class PessoaEquipeDatabase:
     def get_pessoas_from_equipe(equipe_id):
         try:
             PessoaEquipeDatabase.database.db_cursor.execute(
-                "SELECT pessoa_id FROM pessoa_equipe WHERE equipe_id = ?", (equipe_id,))
+                "SELECT * FROM pessoa_equipe WHERE equipe_id = ?", (equipe_id,))
             pessoa_ids = PessoaEquipeDatabase.database.db_cursor.fetchall()
             return pessoa_ids
         except Exception as e:

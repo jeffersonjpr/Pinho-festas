@@ -69,7 +69,10 @@ class PessoaEquipeController:
     @staticmethod
     def get_by_pessoa_id(pessoa_id):
         PessoaEquipeController.__pessoa_exists(pessoa_id)
-        return PessoaEquipeDatabase.get_by_pessoa_id(pessoa_id)
+        pessoaequipe =  PessoaEquipeDatabase.get_by_pessoa_id(pessoa_id)
+        if not pessoaequipe:
+            raise Exception("Colaborador não está em uma equipe")
+        return pessoaequipe
 
     @staticmethod
     def get_by_equipe_id(equipe_id):

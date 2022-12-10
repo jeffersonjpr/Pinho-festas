@@ -7,11 +7,11 @@ from src.database.aluguel_database import AluguelDatabase
 from src.database.brinquedo_database import BrinquedoDatabase
 from src.database.equipe_database import EquipeDatabase
 from src.database.pessoa_equipe_database import PessoaEquipeDatabase
-
+from src.controller.cliente_controller import ClienteController
 
 class AluguelController:
     @staticmethod
-    def insert(brinquedo_id, data_montagem, data_desmontagem, id_montagem, id_desmontagem, local):
+    def insert(brinquedo_id, data_montagem, data_desmontagem, id_montagem, id_desmontagem, id_cliente):
         data_montagem, data_desmontagem = AluguelController.__correct_dates(
             data_montagem, data_desmontagem)
         EquipeController.is_equipe_ready(id_montagem)
@@ -21,9 +21,10 @@ class AluguelController:
         BrinquedoController.does_brinquedo_exists(brinquedo_id)
         BrinquedoController.is_brinquedo_available(
             brinquedo_id, data_montagem, data_desmontagem)
-
+        ClienteController.get_by_id(id_cliente)
+        
         return AluguelDatabase.insert(brinquedo_id, data_montagem,
-                                      data_desmontagem, id_montagem, id_desmontagem, local)
+                                      data_desmontagem, id_montagem, id_desmontagem, id_cliente)
 
     @staticmethod
     def __correct_dates(data_montagem, data_desmontagem):
@@ -39,8 +40,7 @@ class AluguelController:
 
         return data_montagem, data_desmontagem
 
-    staticmethod
-
+    @staticmethod
     def is_equipe_available_in_this_date(equipe_id, data_fim):
         # data - 30 minutos
         data_inicio = data_fim - 1800
@@ -56,13 +56,13 @@ class AluguelController:
         AluguelDatabase.delete(id)
         print("Aluguel deletado com sucesso")
 
-    @staticmethod
-    def update(id, brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id):
-        AluguelController.__aluguel_exists(id)
+    # @staticmethod
+    # def update(id, brinquedo_id, data_montagem, data_desmontagem, equipe_montagem_id, equipe_desmontagem_id):
+    #     AluguelController.__aluguel_exists(id)
 
-        AluguelDatabase.update(id, brinquedo_id, data_montagem,
-                               data_desmontagem, equipe_montagem_id, equipe_desmontagem_id)
-        print("Aluguel atualizado com sucesso")
+    #     AluguelDatabase.update(id, brinquedo_id, data_montagem,
+    #                            data_desmontagem, equipe_montagem_id, equipe_desmontagem_id)
+    #     print("Aluguel atualizado com sucesso")
 
     @staticmethod
     def __aluguel_exists(id):
@@ -72,14 +72,35 @@ class AluguelController:
     @staticmethod
     def get_all():
         alugueis = AluguelDatabase.get_all()
-        for aluguel in alugueis:
-            aluguel_temp = list(aluguel)
+        AluguelController.format_alugueis(alugueis)
+        return alugueis
+
+    @staticmethod
+    def format_alugueis(alugueis):
+        for i in range(len(alugueis)):
+            aluguel_temp = list(alugueis[i])
             data_montagem = datetime.datetime.fromtimestamp(aluguel_temp[2])
             data_desmontagem = datetime.datetime.fromtimestamp(aluguel_temp[3])
             aluguel_temp[2] = data_montagem
             aluguel_temp[3] = data_desmontagem
-            aluguel = tuple(aluguel_temp)
+            aluguel_temp[4] = EquipeDatabase.get_by_id(aluguel_temp[4])[1]
+            aluguel_temp[5] = EquipeDatabase.get_by_id(aluguel_temp[5])[1]
+            alugueis[i] = tuple(aluguel_temp)
 
+    @staticmethod
+    def get_by_equipe_montagem_id(id):
+        alugueis = AluguelDatabase.get_by_equipe_montagem_id(id)
+        if not alugueis:
+            raise Exception("Não foram encontrados montagens para essa equipe.")
+        AluguelController.format_alugueis(alugueis)
+        return alugueis
+
+    @staticmethod
+    def get_by_equipe_desmontagem_id(id):
+        alugueis = AluguelDatabase.get_by_equipe_desmontagem_id(id)
+        if not alugueis:
+            raise Exception("Não foram encontrados desmontagens para essa equipe.")
+        AluguelController.format_alugueis(alugueis)
         return alugueis
 
     @staticmethod

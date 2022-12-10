@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 
 from src.controller.database_controller import DatabaseController
-from src.models import aluguel, brinquedo, equipe, pessoa, pessoa_equipe
+from src.models import aluguel, brinquedo, equipe, pessoa, pessoa_equipe, cliente
 
 
 class Database:
@@ -42,4 +42,5 @@ class Database:
         self.create_table(pessoa_equipe.pessoa_equipe)
         self.create_table(brinquedo.brinquedo)
         self.create_table(aluguel.aluguel)
+        self.create_table(cliente.cliente)
         # print("Tables created")

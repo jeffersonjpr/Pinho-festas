@@ -5,6 +5,20 @@ class ClienteController:
 
     @staticmethod
     def insert(nome, cpf, telefone, email, cep, bairro, cidade, endereco):
+        if not nome:
+            raise Exception("Nome não pode ser vazio")
+        if not telefone:
+            raise Exception("Telefone não pode ser vazio")
+        if not cep:
+            raise Exception("CEP não pode ser vazio")
+        if not bairro:
+            raise Exception("Bairro não pode ser vazio")
+        if not cidade:
+            raise Exception("Cidade não pode ser vazio")
+        if not endereco:
+            raise Exception("Endereço não pode ser vazio")
+        
+        
         if ClienteDatabase.get_by_cpf(cpf):
             raise Exception("CPF já cadastrado")
 
@@ -19,6 +33,19 @@ class ClienteController:
     @staticmethod
     def update(id, nome, cpf, telefone, email, cep, bairro, cidade, endereco):
         ClienteController.__cliente_exists(id)
+        
+        if not nome:
+            raise Exception("Nome não pode ser vazio")
+        if not telefone:
+            raise Exception("Telefone não pode ser vazio")
+        if not cep:
+            raise Exception("CEP não pode ser vazio")
+        if not bairro:
+            raise Exception("Bairro não pode ser vazio")
+        if not cidade:
+            raise Exception("Cidade não pode ser vazio")
+        if not endereco:
+            raise Exception("Endereço não pode ser vazio")
 
         ClienteDatabase.update(id, nome, cpf, telefone, email, cep, bairro, cidade, endereco)
 
